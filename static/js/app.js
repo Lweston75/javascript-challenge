@@ -2,28 +2,48 @@
 var tableData = data;
 
 // YOUR CODE HERE!
-tbody = d3.select("tbody")
 
-function displayData(data){
-    tbody.text(""),
-    data.forEach(function(dighting){
-        new_tr = tbody.append("tr")
-        Object.enteries(sighting).forEach(function([key, valur]){
-            new_td = new+true.append("td").text(value)
-        })
-    })
-}
+var tbody = d3.select("tbody");
 
-displayData(tableData)
 
-var dateInputText = d3.select("#datetime")
-var button = d3.select("filter-btn")
+tableData.forEach((sighting) => {
 
-function clickSelect(){
-    d3.event.preventDefault();
-    console.log(dateImputText.propertiy("value"));
-    var new_table = tableData.filter(sighting => sighting.datetime===dateInputText.property("value"))
-    displayData(new_table);
-}
+	
+	var row = tbody.append("tr");
+	Object.entries(sighting).forEach(([key, value]) => {
+		var cell = row.append("td");
+		cell.text(value);
+	});
+});
 
-dataImputText.on("change", clickSelect)
+var button = d3.select("#filter-btn");
+var form = d3.select("form");
+
+button.on("click", runEnter);
+form.on("submit", runEnter);
+
+function runEnter() {
+
+
+  d3.event.preventDefault();
+
+  var inputElement = d3.select(".form-control");
+  var inputValue = inputElement.property("value");
+	var results = tableData.filter(sighting => sighting.datetime === inputValue);
+	
+	tbody.html("");
+
+	if (results.length === 0) {
+		tbody.text(`No sightings on ${inputValue}.`);
+	}
+
+	else {
+		results.forEach((sighting) => {
+			var row = tbody.append("tr");
+			Object.entries(sighting).forEach(([key, value]) => {
+				var cell = row.append("td");
+				cell.text(value);
+			});
+		});
+	};
+};
